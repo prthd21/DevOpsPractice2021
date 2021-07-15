@@ -1,0 +1,651 @@
+{
+	"info": {
+		"_postman_id": "312abb55-6899-4149-b749-326801a9680c",
+		"name": "Practice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Token type check\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.token_type).to.eql(\"bearer\");\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.globals.set(\"variable_key\", jsonData.access_token);\r",
+							"\r",
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response check\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"access_token\" && \"token_type\" && \"expires_in\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "TestUser420",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "TestUser420",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://52.191.9.145:8085/token",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SignUp",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var rndValue = Math.floor(Math.random() * 100000) + 99999\r",
+							"pm.environment.set(\"rndValueEnv\", rndValue);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response check\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\" && \"login\" && \"nativeName\" && \"role\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"201 status code (successful registration) check\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Login\": \"TU{{rndValueEnv}}\",\r\n    \"NativeName\": \"Почтальон Тест\",\r\n    \"Password\": \"TestUser420\",\r\n    \"ConfirmPassword\": \"TestUser420\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://52.191.9.145:8085/api/user",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserInfo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.globals.set(\"user_id\", jsonData.id);\r",
+							"\r",
+							"pm.test(\"Response check\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\" && \"login\" && \"nativeName\" && \"role\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://52.191.9.145:8085/api/me",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserInfoUpdate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response check\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\" && \"login\" && \"nativeName\" && \"role\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"NativeName\": \"Апдейт 22ест\",\r\n  \"Role\": 0,\r\n  \"OldPassword\": \"TestUser420\",\r\n  \"Password\": \"TestUser420\",\r\n  \"ConfirmPassword\": \"TestUser420\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://52.191.9.145:8085/api/user/{{user_id}}",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"user",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserInfoByID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response check\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\" && \"login\" && \"nativeName\" && \"role\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.191.9.145:8085/api/user/{{user_id}}",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"user",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MapList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response check\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\" && \"name\" && \"owner\" && \"id\" && \"login\" && \"nativeName\" && \"role\" &&  \"width\" && \"height\" && \"policeCount\" && \"thiefCount\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.191.9.145:8085/api/map",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"map"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GameCreate",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var rndValue = Math.floor(Math.random() * 100000) + 99999\r",
+							"pm.environment.set(\"rndValueEnv\", rndValue);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.globals.set(\"game_id\", jsonData.id);\r",
+							"\r",
+							"pm.test(\"Response check\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\" && \"name\" && \"owner\" && \"id\" && \"login\" && \"nativeName\" && \"role\" &&  \"status\" && \"createdAtUTC\" && \"startedAtUTC\" && \"time\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Not started check\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.startedAtUTC).to.eql(null);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Name\": \"ПК{{rndValueEnv}}\",\r\n  \"MapId\": \"89f76ef11b58469abb7ca070ae5c6264\",\r\n  \"SwitchTimeout\": 6000,\r\n  \"StartupTeamLives\": 3,\r\n  \"PoliceSpeed\": 3,\r\n  \"ThiefSpeed\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://52.191.9.145:8085/api/game",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"game"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GameList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response check\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\" && \"name\" && \"owner\" && \"id\" && \"login\" && \"nativeName\" && \"role\" && \"status\" && \"createdAtUTC\" && \"startedAtUTC\" && \"time\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"No active games check\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.eql([]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.191.9.145:8085/api/games",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"games"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GameInfo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Is our game? check\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.owner.login).to.eql(\"TestUser420\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response check\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\" && \"name\" && \"owner\" && \"id\" && \"login\" && \"nativeName\" && \"role\" &&  \"status\" && \"createdAtUTC\" && \"startedAtUTC\" && \"time\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"404 no game found check\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.191.9.145:8085/api/game/{{game_id}}",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"game",
+						"{{game_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?UserGameInfo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response check\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\" && \"name\" && \"owner\" && \"id\" && \"login\" && \"nativeName\" && \"role\" &&  \"status\" && \"createdAtUTC\" && \"startedAtUTC\" && \"time\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"No active games check\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.eql([]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.191.9.145:8085/api/game/",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"game",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GameDelete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"no game found check\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"202 succesfull delete check\", function () {\r",
+							"    pm.response.to.have.status(202);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://52.191.9.145:8085/api/game/{{game_id}}",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"game",
+						"{{game_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserMapList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code check\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response check\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\" && \"name\" && \"owner\" && \"id\" && \"login\" && \"nativeName\" && \"role\" &&  \"width\" && \"height\" && \"policeCount\" && \"thiefCount\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.191.9.145:8085/api/user/{{user_id}}/maps",
+					"protocol": "http",
+					"host": [
+						"52",
+						"191",
+						"9",
+						"145"
+					],
+					"port": "8085",
+					"path": [
+						"api",
+						"user",
+						"{{user_id}}",
+						"maps"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{variable_key}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
